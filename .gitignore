@@ -120,3 +120,8 @@ data/*
 
 # ignore prior.py from smplify-x repo
 smplify/prior.py
+
+*.tar
+*.gz
+*.png
+*.jpeg
