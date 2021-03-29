@@ -9,4 +9,4 @@ scipy=1.1.0
 smplx=c0c796feec25b7febbb826bf7819227783cf21fc
 ```
 
-`neural-render-pytorch` must be installed locally from source without building a wheel
+`neural-render-pytorch` must be installed locally from source without building a wheel. <span style="color:red">This is under `py37`.</span>

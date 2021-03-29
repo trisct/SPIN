@@ -119,8 +119,14 @@ if __name__ == '__main__':
     img, norm_img = process_image(args.img, args.bbox, args.openpose, input_res=constants.IMG_RES)
     with torch.no_grad():
         pred_rotmat, pred_betas, pred_camera = model(norm_img.to(device))
-        pred_output = smpl(betas=pred_betas, body_pose=pred_rotmat[:,1:], global_orient=pred_rotmat[:,0].unsqueeze(1), pose2rot=False)
+        pred_output = smpl(betas=pred_betas, body_pose=pred_rotmat[:,1:], global_orient=pred_rotmat[:,0:1], pose2rot=False)
         pred_vertices = pred_output.vertices
+        print(f'[In demo] pred_rotmat.shape = {pred_rotmat.shape}') # [1, 24, 3, 3]
+        print(f'[In demo] pred_betas.shape = {pred_betas.shape}') # [1, 10]
+        print(f'[In demo] pred_camera.shape = {pred_camera.shape}') # [1, 3]
+        print(f'[In demo] type(pred_output) = {type(pred_output)}') # <class 'smplx.body_models.ModelOutput'>
+        print(f'[In demo] dir(pred_output) = {dir(pred_output)}') # [..., 'betas', 'body_pose', 'count', 'expression', 'full_pose', 'global_orient', 'index', 'jaw_pose', 'joints', 'left_hand_pose', 'right_hand_pose', 'vertices']
+        print(f'[In demo] pred_vertices.shape = {pred_vertices.shape}') # [1, 6890, 3]
         
     # Calculate camera parameters for rendering
     camera_translation = torch.stack([pred_camera[:,1], pred_camera[:,2], 2*constants.FOCAL_LENGTH/(constants.IMG_RES * pred_camera[:,0] +1e-9)],dim=-1)
